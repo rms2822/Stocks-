@@ -4,6 +4,33 @@ import requests, csv, json, sqlite3
 API = "http://localhost:8000"
 DB  = "dse.db"
 
+# Sector recovery for tickers the feed leaves blank (see clean_analysis.py).
+SECTOR_OVERRIDES = {
+    "POPULARLIF": "Insurance", "FAREASTLIF": "Insurance", "PADMALIFE": "Insurance",
+    "RUPALILIFE": "Insurance", "SANDHANINS": "Insurance", "DELTALIFE": "Insurance",
+    "MEGHNALIFE": "Insurance", "NATLIFEINS": "Insurance", "PRAGATILIF": "Insurance",
+    "TILIL": "Insurance", "SONALILIFE": "Insurance", "PRIMELIFE": "Insurance",
+    "SUNLIFEINS": "Insurance", "PROGRESLIF": "Insurance", "CLICL": "Insurance",
+    "PRIME1ICBA": "Mutual Fund", "CAPITECGBF": "Mutual Fund", "FBFIF": "Mutual Fund",
+    "SEMLIBBLSF": "Mutual Fund", "VAMLRBBF": "Mutual Fund", "RELIANCE1": "Mutual Fund",
+    "BDSERVICE": "Services and Real Estate",
+}
+_INS_SUF = ("LIFE", "LIF", "LIFEINS", "INS", "LIL")
+_MF_SUF = ("MF", "ICBA", "GBF", "FIF", "BBLSF", "RBBF", "MF1")
+
+
+def normalize_sector(ticker, sector):
+    """Return a non-blank sector, recovering it from ticker when the feed omits it."""
+    if sector and str(sector).strip():
+        return sector
+    if ticker in SECTOR_OVERRIDES:
+        return SECTOR_OVERRIDES[ticker]
+    if any(ticker.endswith(s) for s in _MF_SUF):
+        return "Mutual Fund"
+    if any(ticker.endswith(s) for s in _INS_SUF):
+        return "Insurance"
+    return "Unclassified"
+
 COLS = [
     "ticker", "sector", "ltp", "percent_change", "volume",
     "combined_score", "tech_score", "fund_score", "recommendation",
@@ -35,7 +62,7 @@ def main():
             fund = d.get("fundamental", {})
             rows.append({
                 "ticker": ticker,
-                "sector": d.get("sector") or s.get("sector"),
+                "sector": normalize_sector(ticker, d.get("sector") or s.get("sector")),
                 "ltp": d.get("current_price") or s.get("ltp"),
                 "percent_change": s.get("percent_change"),
                 "volume": s.get("volume"),
