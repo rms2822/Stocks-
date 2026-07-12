@@ -1,0 +1,9 @@
+﻿venv/
+__pycache__/
+*.pyc
+*.pyo
+dse.db
+tech_analysis_all.json
+auto_update.log
+*.xlsx
+engine_output.json
