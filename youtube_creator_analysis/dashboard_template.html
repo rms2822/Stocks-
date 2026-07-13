@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YouTube Title Performance Explorer</title>
+<style>
+  :root {
+    --surface-1:      #fcfcfb;
+    --surface-2:      #ffffff;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6; /* blue - boost / primary */
+    --series-1-wash:  rgba(42,120,214,0.10);
+    --series-2:       #1baf7a; /* aqua */
+    --series-6:       #e34948; /* red - reduction */
+    --series-6-wash:  rgba(227,73,72,0.10);
+    --good:           #006300;
+    --chip-bg:        #eeede8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-1:      #1a1a19;
+      --surface-2:      #222221;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-1-wash:  rgba(57,135,229,0.14);
+      --series-2:       #199e70;
+      --series-6:       #e66767;
+      --series-6-wash:  rgba(230,103,103,0.14);
+      --good:           #0ca30c;
+      --chip-bg:        #2a2a28;
+    }
+  }
+  :root[data-theme="dark"] {
+    --surface-1:      #1a1a19;
+    --surface-2:      #222221;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --series-1-wash:  rgba(57,135,229,0.14);
+    --series-2:       #199e70;
+    --series-6:       #e66767;
+    --series-6-wash:  rgba(230,103,103,0.14);
+    --good:           #0ca30c;
+    --chip-bg:        #2a2a28;
+  }
+  :root[data-theme="light"] {
+    --surface-1:      #fcfcfb;
+    --surface-2:      #ffffff;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6;
+    --series-1-wash:  rgba(42,120,214,0.10);
+    --series-2:       #1baf7a;
+    --series-6:       #e34948;
+    --series-6-wash:  rgba(227,73,72,0.10);
+    --good:           #006300;
+    --chip-bg:        #eeede8;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    overflow-x: hidden;
+  }
+  body { padding: 24px clamp(12px, 3vw, 40px) 60px; }
+
+  header.page-head { max-width: 1280px; margin: 0 auto 20px; }
+  header.page-head h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  header.page-head p.sub { color: var(--text-secondary); margin: 0 0 6px; font-size: 0.92rem; max-width: 760px; line-height: 1.5; }
+  header.page-head p.note { color: var(--text-muted); margin: 0; font-size: 0.78rem; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; }
+
+  /* filter row */
+  .filters {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 20px;
+  }
+  .filters label { font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .filters .field { display: flex; flex-direction: column; min-width: 140px; }
+  .filters select, .filters input[type="text"], .filters input[type="number"] {
+    background: var(--surface-2); color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 0.85rem;
+    font-family: inherit;
+  }
+  .filters input[type="text"] { min-width: 200px; }
+  .filters button.reset {
+    background: transparent; color: var(--text-secondary); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; align-self: flex-end;
+  }
+  .filters button.reset:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+  .filters .count-pill { margin-left: auto; font-size: 0.78rem; color: var(--text-secondary); align-self: flex-end; padding-bottom: 6px; }
+  .filters .count-pill strong { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+  /* KPI row */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+  @media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  .kpi {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .kpi .label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi .value { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+
+  /* card grid */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; position: relative;
+  }
+  .card.full { grid-column: 1 / -1; }
+  .card h2 { font-size: 0.95rem; margin: 0 0 2px; font-weight: 600; }
+  .card p.desc { font-size: 0.78rem; color: var(--text-muted); margin: 0 0 14px; }
+  .card .legend { display: flex; gap: 14px; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px; }
+  .card .legend .key { display: inline-flex; align-items: center; gap: 5px; }
+  .card .legend .swatch { width: 12px; height: 2px; border-radius: 1px; display: inline-block; }
+
+  /* bar rows */
+  .barlist { display: flex; flex-direction: column; gap: 3px; }
+  .barrow { display: grid; grid-template-columns: 148px 1fr 84px; align-items: center; gap: 8px; height: 26px; }
+  .barrow .rlabel { font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .barrow .rtrack { position: relative; height: 24px; background: transparent; }
+  .barrow .rtrack .base { position: absolute; left: 0; top: 11px; right: 0; height: 1px; background: var(--gridline); }
+  .barrow .rbar { position: absolute; top: 4px; height: 16px; border-radius: 4px; background: var(--series-1); cursor: pointer; transition: filter .12s ease; }
+  .barrow .rbar:hover, .barrow .rbar:focus { filter: brightness(1.12); outline: none; }
+  .barrow .rval { font-size: 0.76rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+
+  /* diverging bars */
+  .divrow { display: grid; grid-template-columns: 170px 1fr 70px; align-items: center; gap: 8px; height: 26px; }
+  .divrow .dlabel { font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .divrow .dtrack { position: relative; height: 24px; }
+  .divrow .dtrack .mid { position: absolute; left: 50%; top: 2px; bottom: 2px; width: 1px; background: var(--baseline); }
+  .divrow .dbar { position: absolute; top: 4px; height: 16px; border-radius: 4px; cursor: pointer; transition: filter .12s ease; }
+  .divrow .dbar:hover { filter: brightness(1.12); }
+  .divrow .dbar.boost { background: var(--series-1); }
+  .divrow .dbar.reduce { background: var(--series-6); }
+  .divrow .dval { font-size: 0.76rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+
+  /* tooltip */
+  #tooltip {
+    position: fixed; pointer-events: none; z-index: 50;
+    background: var(--text-primary); color: var(--surface-1);
+    font-size: 0.76rem; padding: 6px 9px; border-radius: 6px;
+    max-width: 260px; line-height: 1.4; opacity: 0; transform: translate(-50%, -100%);
+    transition: opacity .08s ease;
+  }
+  #tooltip.show { opacity: 1; }
+  #tooltip b { font-variant-numeric: tabular-nums; }
+
+  /* tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--gridline); }
+  th { color: var(--text-muted); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; background: var(--surface-1); }
+  th.sorted { color: var(--text-primary); }
+  th .arrow { font-size: 0.65rem; margin-left: 3px; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; }
+  td a { color: var(--series-1); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  tr.clickable { cursor: pointer; }
+  tr.clickable:hover td { background: var(--chip-bg); }
+  .tablewrap { max-height: 460px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .cat-chip {
+    display: inline-block; padding: 1px 8px; border-radius: 100px; font-size: 0.72rem;
+    background: var(--chip-bg); color: var(--text-secondary);
+  }
+  .title-cell { max-width: 420px; }
+
+  .subtabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .subtabs button {
+    background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
+    padding: 5px 12px; border-radius: 100px; font-size: 0.78rem; cursor: pointer; font-family: inherit;
+  }
+  .subtabs button.active { background: var(--series-1); border-color: var(--series-1); color: #fff; }
+
+  footer.credit { max-width: 1280px; margin: 30px auto 0; color: var(--text-muted); font-size: 0.75rem; line-height: 1.6; }
+  footer.credit a { color: var(--text-secondary); }
+
+  .word-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .word-chip {
+    background: var(--chip-bg); border-radius: 100px; padding: 4px 10px; font-size: 0.76rem;
+    cursor: pointer; color: var(--text-secondary); display: inline-flex; align-items: baseline; gap: 5px;
+    border: 1px solid transparent;
+  }
+  .word-chip:hover { border-color: var(--series-1); color: var(--text-primary); }
+  .word-chip b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .word-chip.active { background: var(--series-1-wash); border-color: var(--series-1); color: var(--text-primary); }
+
+  .empty-state { padding: 30px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <h1>YouTube Title Performance Explorer</h1>
+  <p class="sub">Real videos scraped directly from YouTube across 25 English-language creator channels
+    (tech, science, finance, vlogging, cooking, DIY, fitness, cars, travel, comedy/entertainment).
+    Music, predominantly-gaming, kids', and large media-company channels were excluded. Every video
+    below has at least 1,000,000 views &mdash; explore which title patterns line up with stronger performance.</p>
+  <p class="note" id="data-note"></p>
+</header>
+
+<div class="wrap">
+
+  <div class="filters">
+    <div class="field">
+      <label for="f-category">Category</label>
+      <select id="f-category"><option value="">All categories</option></select>
+    </div>
+    <div class="field">
+      <label for="f-channel">Channel</label>
+      <select id="f-channel"><option value="">All channels</option></select>
+    </div>
+    <div class="field">
+      <label for="f-search">Title contains</label>
+      <input type="text" id="f-search" placeholder="e.g. never, $, how to&hellip;">
+    </div>
+    <div class="field">
+      <label for="f-minviews">Min views (millions)</label>
+      <input type="number" id="f-minviews" min="1" step="1" value="1" style="width:90px">
+    </div>
+    <button class="reset" id="reset-filters">Reset filters</button>
+    <div class="count-pill"><strong id="count-pill-n">0</strong> videos match</div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Videos in view</div><div class="value" id="kpi-videos">&ndash;</div></div>
+    <div class="kpi"><div class="label">Channels in view</div><div class="value" id="kpi-channels">&ndash;</div></div>
+    <div class="kpi"><div class="label">Average views</div><div class="value" id="kpi-avg">&ndash;</div></div>
+    <div class="kpi"><div class="label">Median views</div><div class="value" id="kpi-median">&ndash;</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Average views by category</h2>
+      <p class="desc">Sorted high to low, within the current filter selection.</p>
+      <div class="barlist" id="chart-category"></div>
+    </div>
+
+    <div class="card">
+      <h2>Title feature impact on views</h2>
+      <p class="desc">Average views for titles with each pattern vs. without it, shown as a multiple of baseline (1&times;).</p>
+      <div class="legend">
+        <span class="key"><span class="swatch" style="background:var(--series-1)"></span>Boosts views</span>
+        <span class="key"><span class="swatch" style="background:var(--series-6)"></span>Below baseline</span>
+      </div>
+      <div class="barlist" id="chart-features"></div>
+    </div>
+
+    <div class="card">
+      <h2>Title length vs. views</h2>
+      <p class="desc">By word count and by character count &mdash; is shorter or longer better?</p>
+      <div class="subtabs">
+        <button class="active" data-len="words">By word count</button>
+        <button data-len="chars">By character count</button>
+      </div>
+      <div class="barlist" id="chart-length"></div>
+    </div>
+
+    <div class="card">
+      <h2>Words that show up in high-view titles</h2>
+      <p class="desc">Common words across qualifying titles &mdash; size/number reflects average views. Click a word to filter.</p>
+      <div class="subtabs">
+        <button class="active" data-wordmode="count">Most used</button>
+        <button data-wordmode="views">Highest avg views</button>
+      </div>
+      <div class="word-chip-row" id="word-cloud"></div>
+    </div>
+
+    <div class="card full">
+      <h2>Channel comparison</h2>
+      <p class="desc">Click a row to filter the video explorer below to that channel.</p>
+      <div class="tablewrap" style="max-height:340px">
+        <table id="channel-table">
+          <thead><tr>
+            <th data-key="channel_name">Channel</th>
+            <th data-key="category">Category</th>
+            <th data-key="subscriber_count">Subscribers</th>
+            <th data-key="qualifying_video_count">Qualifying videos</th>
+            <th data-key="avg_views">Avg views</th>
+            <th data-key="median_views">Median views</th>
+            <th data-key="top_video_views">Top video</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card full">
+      <h2>Video explorer</h2>
+      <p class="desc">All qualifying videos (1M+ views) matching the current filters. Click a column to sort.</p>
+      <div class="tablewrap">
+        <table id="video-table">
+          <thead><tr>
+            <th data-key="view_count" class="sorted">Views<span class="arrow">&#9660;</span></th>
+            <th data-key="title">Title</th>
+            <th data-key="channel_name">Channel</th>
+            <th data-key="category">Category</th>
+            <th data-key="duration_sec">Duration</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="credit">
+  Data scraped directly from public YouTube channel pages (via yt-dlp) on the date this dashboard was generated.
+  Up to 350 most recent uploads were scanned per channel; the top 25 videos with 1,000,000+ views per channel
+  are included. Figures reflect view counts at scrape time and will differ from live YouTube.
+</footer>
+
+<div id="tooltip"></div>
+
+<script type="application/json" id="dataset-json">__DATASET_JSON__</script>
+<script type="application/json" id="analysis-json">__ANALYSIS_JSON__</script>
+
+<script>
+(function(){
+  const DATASET = JSON.parse(document.getElementById('dataset-json').textContent);
+  const ANALYSIS = JSON.parse(document.getElementById('analysis-json').textContent);
+
+  const fmtCompact = (n) => {
+    if (n == null) return '–';
+    const abs = Math.abs(n);
+    if (abs >= 1e9) return (n/1e9).toFixed(2).replace(/\.00$/,'') + 'B';
+    if (abs >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
+    if (abs >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + 'K';
+    return String(Math.round(n));
+  };
+  const fmtInt = (n) => n == null ? '–' : n.toLocaleString('en-US');
+  const fmtDuration = (sec) => {
+    if (!sec) return '–';
+    const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+    if (h) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${m}:${String(s).padStart(2,'0')}`;
+  };
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  const featureLabels = {
+    has_number: 'Contains a number',
+    has_question_mark: 'Ends/has question mark',
+    has_exclamation: 'Has exclamation mark',
+    has_dollar_sign: 'Mentions a $ amount',
+    has_brackets: 'Has brackets/parens',
+    has_colon: 'Has a colon',
+    starts_with_number: 'Starts with a number',
+    has_all_caps_word: 'Has an ALL-CAPS word',
+    has_first_person: 'First person (I/my/we)',
+    has_second_person: 'Second person (you/your)',
+    has_superlative: 'Superlative (best/craziest&hellip;)',
+    has_how_to: '"How to" phrasing',
+    has_wh_word: 'Starts with why/what/how&hellip;',
+  };
+
+  // ---- state ----
+  const state = {
+    category: '', channel: '', search: '', minViews: 1,
+    lengthMode: 'words', wordMode: 'count',
+    videoSort: { key: 'view_count', dir: -1 },
+    channelSort: { key: 'avg_views', dir: -1 },
+  };
+
+  const tooltip = document.getElementById('tooltip');
+  function showTooltip(evt, html) {
+    tooltip.innerHTML = html;
+    tooltip.classList.add('show');
+    moveTooltip(evt);
+  }
+  function moveTooltip(evt) {
+    tooltip.style.left = evt.clientX + 'px';
+    tooltip.style.top = (evt.clientY - 10) + 'px';
+  }
+  function hideTooltip() { tooltip.classList.remove('show'); }
+
+  // ---- populate filter selects ----
+  const categorySel = document.getElementById('f-category');
+  const channelSel = document.getElementById('f-channel');
+  const categories = [...new Set(DATASET.channels.map(c => c.category))].sort();
+  categories.forEach(cat => {
+    const o = document.createElement('option'); o.value = cat; o.textContent = cat;
+    categorySel.appendChild(o);
+  });
+  const channelsSorted = [...DATASET.channels].sort((a,b) => a.channel_name.localeCompare(b.channel_name));
+  channelsSorted.forEach(c => {
+    const o = document.createElement('option'); o.value = c.handle; o.textContent = c.channel_name;
+    channelSel.appendChild(o);
+  });
+
+  document.getElementById('data-note').textContent =
+    `${DATASET.channels.length} channels scanned · ${DATASET.videos.length} qualifying videos in the full dataset (view counts as of scrape time)`;
+
+  // ---- derived filtered data ----
+  function titleMatchesSearch(title, search) {
+    const s = search.trim().toLowerCase();
+    if (!s) return true;
+    // word-boundary match for plain alphanumeric terms (keeps counts consistent with the
+    // tokenized word-frequency chips); falls back to substring for punctuation-bearing terms.
+    if (/^[a-z0-9']+$/i.test(s)) {
+      return new RegExp(`(^|[^a-z0-9'])${s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^a-z0-9']|$)`, 'i').test(title);
+    }
+    return title.toLowerCase().includes(s);
+  }
+
+  function getFilteredVideos() {
+    const minV = (parseFloat(state.minViews) || 0) * 1e6;
+    return DATASET.videos.filter(v => {
+      if (state.category && v.category !== state.category) return false;
+      if (state.channel && v.channel_handle !== state.channel) return false;
+      if (!titleMatchesSearch(v.title, state.search)) return false;
+      if (v.view_count < minV) return false;
+      return true;
+    });
+  }
+
+  function mean(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+  function median(arr) {
+    if (!arr.length) return 0;
+    const s = [...arr].sort((a,b)=>a-b);
+    const mid = Math.floor(s.length/2);
+    return s.length % 2 ? s[mid] : (s[mid-1]+s[mid])/2;
+  }
+
+  const WORD_RE = /[a-z0-9$%']+/g;
+  const STOPWORDS = new Set(("a an the of in on to and is are was were for with my this that i we you your our it its at by from as or but if then so than not no do does did be been being have has had will would can could should just about into over under out up down off vs").split(' '));
+  function tokenize(title) {
+    const m = title.toLowerCase().match(WORD_RE) || [];
+    return m.map(w => w.replace(/^'+|'+$/g,'')).filter(Boolean);
+  }
+  const FEATURE_FNS = {
+    has_number: t => /\d/.test(t),
+    has_question_mark: t => t.includes('?'),
+    has_exclamation: t => t.includes('!'),
+    has_dollar_sign: t => t.includes('$'),
+    has_brackets: t => /[()\[\]]/.test(t),
+    has_colon: t => t.includes(':'),
+    starts_with_number: t => /^\s*[\d$]/.test(t),
+    has_all_caps_word: t => t.split(' ').some(w => w.length >= 3 && w === w.toUpperCase() && /[A-Z]/.test(w)),
+    has_first_person: t => /\b(i|i'm|my|we|our)\b/i.test(t),
+    has_second_person: t => /\b(you|your|you're)\b/i.test(t),
+    has_superlative: t => /\b(best|worst|biggest|smallest|fastest|extreme|insane|craziest|ultimate|greatest|never|always|secret|impossible|perfect|first|last|most|least)\b/i.test(t),
+    has_how_to: t => /^how to/i.test(t) || / how to /i.test(t),
+    has_wh_word: t => /^(why|what|how|when|where|which|who)\b/i.test(t),
+  };
+
+  function computeFeatureImpact(videos) {
+    const out = [];
+    for (const [key, fn] of Object.entries(FEATURE_FNS)) {
+      const withV = [], withoutV = [];
+      videos.forEach(v => (fn(v.title) ? withV : withoutV).push(v.view_count));
+      const avgWith = mean(withV), avgWithout = mean(withoutV);
+      out.push({ feature: key, countWith: withV.length, countWithout: withoutV.length,
+        avgWith, avgWithout, lift: avgWithout ? avgWith/avgWithout : null });
+    }
+    return out.filter(f => f.lift != null && f.countWith >= 3).sort((a,b) => b.lift - a.lift);
+  }
+
+  function computeWordStats(videos) {
+    const stats = new Map();
+    videos.forEach(v => {
+      const seen = new Set(tokenize(v.title));
+      seen.forEach(w => {
+        if (STOPWORDS.has(w) || w.length < 2) return;
+        if (!stats.has(w)) stats.set(w, []);
+        stats.get(w).push(v.view_count);
+      });
+    });
+    const arr = [];
+    stats.forEach((views, word) => { if (views.length >= 3) arr.push({ word, count: views.length, avg: mean(views) }); });
+    return arr;
+  }
+
+  function lengthBucketWords(n) {
+    if (n <= 4) return '1-4 words';
+    if (n <= 7) return '5-7 words';
+    if (n <= 10) return '8-10 words';
+    return '11+ words';
+  }
+  function lengthBucketChars(n) {
+    if (n <= 30) return '≤30 chars';
+    if (n <= 50) return '31-50 chars';
+    if (n <= 70) return '51-70 chars';
+    return '71+ chars';
+  }
+
+  // ---- render: KPIs ----
+  function renderKPIs(videos) {
+    document.getElementById('kpi-videos').textContent = fmtInt(videos.length);
+    const chset = new Set(videos.map(v => v.channel_handle));
+    document.getElementById('kpi-channels').textContent = fmtInt(chset.size);
+    const views = videos.map(v => v.view_count);
+    document.getElementById('kpi-avg').textContent = videos.length ? fmtCompact(mean(views)) : '–';
+    document.getElementById('kpi-median').textContent = videos.length ? fmtCompact(median(views)) : '–';
+    document.getElementById('count-pill-n').textContent = fmtInt(videos.length);
+  }
+
+  // ---- render: category bar chart ----
+  function renderCategoryChart(videos) {
+    const el = document.getElementById('chart-category');
+    el.innerHTML = '';
+    const byCat = new Map();
+    videos.forEach(v => { if (!byCat.has(v.category)) byCat.set(v.category, []); byCat.get(v.category).push(v.view_count); });
+    let rows = [...byCat.entries()].map(([cat, vs]) => ({ cat, avg: mean(vs), n: vs.length }));
+    rows.sort((a,b) => b.avg - a.avg);
+    if (!rows.length) { el.innerHTML = '<div class="empty-state">No data for this filter.</div>'; return; }
+    const max = Math.max(...rows.map(r => r.avg));
+    rows.forEach(r => {
+      const row = document.createElement('div'); row.className = 'barrow';
+      const pct = (r.avg / max) * 100;
+      row.innerHTML = `
+        <div class="rlabel" title="${escapeHtml(r.cat)}">${escapeHtml(r.cat)}</div>
+        <div class="rtrack"><div class="base"></div><div class="rbar" style="width:${pct}%;background:var(--series-1)" tabindex="0"></div></div>
+        <div class="rval">${fmtCompact(r.avg)}</div>`;
+      const bar = row.querySelector('.rbar');
+      bar.addEventListener('pointermove', e => showTooltip(e, `<b>${escapeHtml(r.cat)}</b><br>Avg views: <b>${fmtInt(Math.round(r.avg))}</b><br>${r.n} video${r.n===1?'':'s'}`));
+      bar.addEventListener('pointerleave', hideTooltip);
+      bar.addEventListener('click', () => { categorySel.value = r.cat; state.category = r.cat; refresh(); });
+      el.appendChild(row);
+    });
+  }
+
+  // ---- render: feature impact diverging chart ----
+  function renderFeatureChart(videos) {
+    const el = document.getElementById('chart-features');
+    el.innerHTML = '';
+    const rows = computeFeatureImpact(videos);
+    if (!rows.length) { el.innerHTML = '<div class="empty-state">Not enough data for this filter.</div>'; return; }
+    const maxDelta = Math.max(...rows.map(r => Math.abs(r.lift - 1)), 0.1);
+    rows.forEach(r => {
+      const row = document.createElement('div'); row.className = 'divrow';
+      const halfPct = Math.min(Math.abs(r.lift - 1) / maxDelta, 1) * 48;
+      const boost = r.lift >= 1;
+      const style = boost
+        ? `left:50%; width:${halfPct}%;`
+        : `right:50%; width:${halfPct}%;`;
+      row.innerHTML = `
+        <div class="dlabel" title="${featureLabels[r.feature]||r.feature}">${featureLabels[r.feature]||r.feature}</div>
+        <div class="dtrack"><div class="mid"></div><div class="dbar ${boost?'boost':'reduce'}" style="${style}" tabindex="0"></div></div>
+        <div class="dval">${r.lift.toFixed(2)}&times;</div>`;
+      const bar = row.querySelector('.dbar');
+      bar.addEventListener('pointermove', e => showTooltip(e,
+        `<b>${featureLabels[r.feature]||r.feature}</b><br>With: <b>${fmtInt(Math.round(r.avgWith))}</b> avg (${r.countWith} videos)<br>Without: <b>${fmtInt(Math.round(r.avgWithout))}</b> avg (${r.countWithout} videos)`));
+      bar.addEventListener('pointerleave', hideTooltip);
+      el.appendChild(row);
+    });
+  }
+
+  // ---- render: length chart ----
+  function renderLengthChart(videos) {
+    const el = document.getElementById('chart-length');
+    el.innerHTML = '';
+    const order = state.lengthMode === 'words'
+      ? ['1-4 words','5-7 words','8-10 words','11+ words']
+      : ['≤30 chars','31-50 chars','51-70 chars','71+ chars'];
+    const buckets = new Map();
+    videos.forEach(v => {
+      const key = state.lengthMode === 'words'
+        ? lengthBucketWords(tokenize(v.title).length)
+        : lengthBucketChars(v.title.length);
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(v.view_count);
+    });
+    const rows = order.filter(k => buckets.has(k)).map(k => ({ key: k, avg: mean(buckets.get(k)), n: buckets.get(k).length }));
+    if (!rows.length) { el.innerHTML = '<div class="empty-state">No data for this filter.</div>'; return; }
+    const max = Math.max(...rows.map(r => r.avg));
+    rows.forEach(r => {
+      const row = document.createElement('div'); row.className = 'barrow';
+      const pct = (r.avg / max) * 100;
+      row.innerHTML = `
+        <div class="rlabel">${r.key}</div>
+        <div class="rtrack"><div class="base"></div><div class="rbar" style="width:${pct}%;background:var(--series-2)" tabindex="0"></div></div>
+        <div class="rval">${fmtCompact(r.avg)}</div>`;
+      const bar = row.querySelector('.rbar');
+      bar.addEventListener('pointermove', e => showTooltip(e, `<b>${r.key}</b><br>Avg views: <b>${fmtInt(Math.round(r.avg))}</b><br>${r.n} video${r.n===1?'':'s'}`));
+      bar.addEventListener('pointerleave', hideTooltip);
+      el.appendChild(row);
+    });
+  }
+
+  // ---- render: word cloud/list ----
+  function renderWordCloud(videos) {
+    const el = document.getElementById('word-cloud');
+    el.innerHTML = '';
+    let words = computeWordStats(videos);
+    words.sort((a,b) => state.wordMode === 'count' ? (b.count - a.count) : (b.avg - a.avg));
+    words = words.slice(0, 40);
+    if (!words.length) { el.innerHTML = '<div class="empty-state">No words meet the minimum frequency for this filter.</div>'; return; }
+    words.forEach(w => {
+      const chip = document.createElement('span');
+      chip.className = 'word-chip' + (state.search.toLowerCase() === w.word ? ' active' : '');
+      const metric = state.wordMode === 'count' ? `${w.count}×` : fmtCompact(w.avg);
+      chip.innerHTML = `${escapeHtml(w.word)} <b>${metric}</b>`;
+      chip.addEventListener('click', () => {
+        const searchBox = document.getElementById('f-search');
+        if (state.search.toLowerCase() === w.word) { state.search = ''; searchBox.value=''; }
+        else { state.search = w.word; searchBox.value = w.word; }
+        refresh();
+      });
+      chip.addEventListener('pointermove', e => showTooltip(e, `<b>${escapeHtml(w.word)}</b><br>Used in ${w.count} titles<br>Avg views: <b>${fmtInt(Math.round(w.avg))}</b>`));
+      chip.addEventListener('pointerleave', hideTooltip);
+      el.appendChild(chip);
+    });
+  }
+
+  // ---- render: channel table ----
+  function computeChannelRows(videos) {
+    const byHandle = new Map();
+    videos.forEach(v => { if (!byHandle.has(v.channel_handle)) byHandle.set(v.channel_handle, []); byHandle.get(v.channel_handle).push(v); });
+    const rows = [];
+    DATASET.channels.forEach(c => {
+      const vids = byHandle.get(c.handle) || [];
+      if (state.category && c.category !== state.category) return;
+      if (state.channel && c.handle !== state.channel) return;
+      if (!vids.length && (state.search || state.minViews > 1)) return;
+      const views = vids.map(v => v.view_count);
+      let top = null;
+      vids.forEach(v => { if (!top || v.view_count > top.view_count) top = v; });
+      rows.push({
+        handle: c.handle, channel_name: c.channel_name, category: c.category,
+        subscriber_count: c.subscriber_count, qualifying_video_count: vids.length,
+        avg_views: mean(views), median_views: median(views),
+        top_video_views: top ? top.view_count : 0, top_video_title: top ? top.title : '–',
+      });
+    });
+    return rows;
+  }
+
+  function renderChannelTable(videos) {
+    const rows = computeChannelRows(videos);
+    const { key, dir } = state.channelSort;
+    rows.sort((a,b) => {
+      const av = a[key], bv = b[key];
+      if (typeof av === 'string') return av.localeCompare(bv) * dir;
+      return (av - bv) * dir;
+    });
+    const tbody = document.querySelector('#channel-table tbody');
+    tbody.innerHTML = '';
+    if (!rows.length) { tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No channels match this filter.</td></tr>`; return; }
+    rows.forEach(r => {
+      const tr = document.createElement('tr'); tr.className = 'clickable';
+      tr.innerHTML = `
+        <td>${escapeHtml(r.channel_name)}</td>
+        <td><span class="cat-chip">${escapeHtml(r.category)}</span></td>
+        <td class="num">${fmtCompact(r.subscriber_count)}</td>
+        <td class="num">${fmtInt(r.qualifying_video_count)}</td>
+        <td class="num">${fmtCompact(r.avg_views)}</td>
+        <td class="num">${fmtCompact(r.median_views)}</td>
+        <td class="num" title="${escapeHtml(r.top_video_title)}">${fmtCompact(r.top_video_views)}</td>`;
+      tr.addEventListener('click', () => { channelSel.value = r.handle; state.channel = r.handle; refresh(); });
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ---- render: video table ----
+  function renderVideoTable(videos) {
+    const { key, dir } = state.videoSort;
+    const rows = [...videos].sort((a,b) => {
+      const av = a[key], bv = b[key];
+      if (typeof av === 'string') return av.localeCompare(bv) * dir;
+      return ((av||0) - (bv||0)) * dir;
+    });
+    const tbody = document.querySelector('#video-table tbody');
+    tbody.innerHTML = '';
+    if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No videos match the current filters.</td></tr>`; return; }
+    const LIMIT = 300;
+    rows.slice(0, LIMIT).forEach(v => {
+      const tr = document.createElement('tr');
+      const titleCell = document.createElement('td');
+      titleCell.className = 'title-cell';
+      const a = document.createElement('a');
+      a.href = v.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = v.title;
+      titleCell.appendChild(a);
+
+      const viewsTd = document.createElement('td'); viewsTd.className = 'num'; viewsTd.textContent = fmtCompact(v.view_count);
+      const chanTd = document.createElement('td'); chanTd.textContent = v.channel_name;
+      const catTd = document.createElement('td'); catTd.innerHTML = `<span class="cat-chip"></span>`;
+      catTd.querySelector('.cat-chip').textContent = v.category;
+      const durTd = document.createElement('td'); durTd.className = 'num'; durTd.textContent = fmtDuration(v.duration_sec);
+
+      tr.appendChild(viewsTd); tr.appendChild(titleCell); tr.appendChild(chanTd); tr.appendChild(catTd); tr.appendChild(durTd);
+      tbody.appendChild(tr);
+    });
+    if (rows.length > LIMIT) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td colspan="5" style="text-align:center;color:var(--text-muted)">Showing top ${LIMIT} of ${rows.length} matching videos, sorted as above.</td>`;
+      tbody.appendChild(tr);
+    }
+  }
+
+  // ---- sorting handlers ----
+  document.querySelectorAll('#video-table th').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.key;
+      if (state.videoSort.key === k) state.videoSort.dir *= -1;
+      else state.videoSort = { key: k, dir: k === 'title' || k === 'channel_name' || k === 'category' ? 1 : -1 };
+      document.querySelectorAll('#video-table th').forEach(t => { t.classList.remove('sorted'); t.querySelector('.arrow')?.remove(); });
+      th.classList.add('sorted');
+      const arrow = document.createElement('span'); arrow.className = 'arrow'; arrow.innerHTML = state.videoSort.dir === 1 ? '&#9650;' : '&#9660;';
+      th.appendChild(arrow);
+      renderVideoTable(getFilteredVideos());
+    });
+  });
+  document.querySelectorAll('#channel-table th').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.key;
+      if (state.channelSort.key === k) state.channelSort.dir *= -1;
+      else state.channelSort = { key: k, dir: k === 'channel_name' || k === 'category' ? 1 : -1 };
+      document.querySelectorAll('#channel-table th').forEach(t => { t.classList.remove('sorted'); t.querySelector('.arrow')?.remove(); });
+      th.classList.add('sorted');
+      const arrow = document.createElement('span'); arrow.className = 'arrow'; arrow.innerHTML = state.channelSort.dir === 1 ? '&#9650;' : '&#9660;';
+      th.appendChild(arrow);
+      renderChannelTable(getFilteredVideos());
+    });
+  });
+
+  // ---- filter handlers ----
+  categorySel.addEventListener('change', () => { state.category = categorySel.value; refresh(); });
+  channelSel.addEventListener('change', () => { state.channel = channelSel.value; refresh(); });
+  document.getElementById('f-search').addEventListener('input', (e) => { state.search = e.target.value; refresh(); });
+  document.getElementById('f-minviews').addEventListener('input', (e) => { state.minViews = e.target.value; refresh(); });
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    state.category = ''; state.channel = ''; state.search = ''; state.minViews = 1;
+    categorySel.value = ''; channelSel.value = ''; document.getElementById('f-search').value = ''; document.getElementById('f-minviews').value = 1;
+    refresh();
+  });
+  document.querySelectorAll('[data-len]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-len]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.lengthMode = btn.dataset.len;
+      renderLengthChart(getFilteredVideos());
+    });
+  });
+  document.querySelectorAll('[data-wordmode]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-wordmode]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.wordMode = btn.dataset.wordmode;
+      renderWordCloud(getFilteredVideos());
+    });
+  });
+
+  function refresh() {
+    const videos = getFilteredVideos();
+    renderKPIs(videos);
+    renderCategoryChart(videos);
+    renderFeatureChart(videos);
+    renderLengthChart(videos);
+    renderWordCloud(videos);
+    renderChannelTable(videos);
+    renderVideoTable(videos);
+  }
+
+  refresh();
+})();
+</script>
+</body>
+</html>

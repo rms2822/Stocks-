@@ -1,0 +1,1715 @@
+{
+  "overall": {
+    "video_count": 620,
+    "avg_views": 42616935.48387097,
+    "median_views": 9300000.0,
+    "max_views": 941000000,
+    "min_views": 1000000
+  },
+  "feature_impact": [
+    {
+      "feature": "starts_with_number",
+      "count_with": 32,
+      "count_without": 588,
+      "avg_views_with": 216868750,
+      "avg_views_without": 33133843.537414964,
+      "median_views_with": 13000000.0,
+      "median_views_without": 9250000.0,
+      "lift": 6.545233720172256
+    },
+    {
+      "feature": "has_dollar_sign",
+      "count_with": 53,
+      "count_without": 567,
+      "avg_views_with": 184167924.5283019,
+      "avg_views_without": 29385537.918871254,
+      "median_views_with": 9400000,
+      "median_views_without": 9300000,
+      "lift": 6.267298051060353
+    },
+    {
+      "feature": "has_number",
+      "count_with": 206,
+      "count_without": 414,
+      "avg_views_with": 74871844.66019417,
+      "avg_views_without": 26567391.304347824,
+      "median_views_with": 9100000.0,
+      "median_views_without": 9300000.0,
+      "lift": 2.818185790335433
+    },
+    {
+      "feature": "has_exclamation",
+      "count_with": 70,
+      "count_without": 550,
+      "avg_views_with": 96852857.14285715,
+      "avg_views_without": 35714181.81818182,
+      "median_views_with": 10000000.0,
+      "median_views_without": 9200000.0,
+      "lift": 2.7118878891284046
+    },
+    {
+      "feature": "has_superlative",
+      "count_with": 103,
+      "count_without": 517,
+      "avg_views_with": 60542718.44660194,
+      "avg_views_without": 39045647.969052225,
+      "median_views_with": 11000000,
+      "median_views_without": 9100000,
+      "lift": 1.5505625235004015
+    },
+    {
+      "feature": "has_second_person",
+      "count_with": 56,
+      "count_without": 564,
+      "avg_views_with": 45371428.571428575,
+      "avg_views_without": 42343439.71631206,
+      "median_views_with": 6850000.0,
+      "median_views_without": 9400000.0,
+      "lift": 1.0715102239072476
+    },
+    {
+      "feature": "has_question_mark",
+      "count_with": 64,
+      "count_without": 556,
+      "avg_views_with": 27173437.5,
+      "avg_views_without": 44394604.31654676,
+      "median_views_with": 12000000.0,
+      "median_views_without": 9100000.0,
+      "lift": 0.6120887418264908
+    },
+    {
+      "feature": "has_brackets",
+      "count_with": 83,
+      "count_without": 537,
+      "avg_views_with": 17585542.1686747,
+      "avg_views_without": 46485847.29981378,
+      "median_views_with": 6000000,
+      "median_views_without": 9600000,
+      "lift": 0.3782988412635677
+    },
+    {
+      "feature": "has_all_caps_word",
+      "count_with": 152,
+      "count_without": 468,
+      "avg_views_with": 18340131.57894737,
+      "avg_views_without": 50501709.4017094,
+      "median_views_with": 10500000.0,
+      "median_views_without": 9100000.0,
+      "lift": 0.3631586296032701
+    },
+    {
+      "feature": "has_first_person",
+      "count_with": 110,
+      "count_without": 510,
+      "avg_views_with": 16801818.181818184,
+      "avg_views_without": 48184901.960784316,
+      "median_views_with": 6550000.0,
+      "median_views_without": 10000000.0,
+      "lift": 0.34869466364157975
+    },
+    {
+      "feature": "has_wh_word",
+      "count_with": 121,
+      "count_without": 499,
+      "avg_views_with": 13195867.768595042,
+      "avg_views_without": 49751102.20440882,
+      "median_views_with": 7300000,
+      "median_views_without": 10000000,
+      "lift": 0.2652376969333889
+    },
+    {
+      "feature": "has_how_to",
+      "count_with": 37,
+      "count_without": 583,
+      "avg_views_with": 10470270.27027027,
+      "avg_views_without": 44657118.35334477,
+      "median_views_with": 3100000,
+      "median_views_without": 9900000,
+      "lift": 0.23445915581532498
+    },
+    {
+      "feature": "has_colon",
+      "count_with": 47,
+      "count_without": 573,
+      "avg_views_with": 9900000,
+      "avg_views_without": 45300523.56020942,
+      "median_views_with": 5200000,
+      "median_views_without": 9500000,
+      "lift": 0.21854052054921178
+    }
+  ],
+  "top_words_by_count": [
+    {
+      "word": "how",
+      "count": 72,
+      "avg_views": 11725000,
+      "median_views": 5300000.0
+    },
+    {
+      "word": "000",
+      "count": 42,
+      "avg_views": 234664285.7142857,
+      "median_views": 66500000.0
+    },
+    {
+      "word": "every",
+      "count": 40,
+      "avg_views": 38662500,
+      "median_views": 14500000.0
+    },
+    {
+      "word": "why",
+      "count": 38,
+      "avg_views": 15355263.157894736,
+      "median_views": 9650000.0
+    },
+    {
+      "word": "day",
+      "count": 35,
+      "avg_views": 42642857.14285714,
+      "median_views": 15000000
+    },
+    {
+      "word": "make",
+      "count": 31,
+      "avg_views": 5383870.9677419355,
+      "median_views": 2000000
+    },
+    {
+      "word": "like",
+      "count": 31,
+      "avg_views": 5100000,
+      "median_views": 2000000
+    },
+    {
+      "word": "smarter",
+      "count": 25,
+      "avg_views": 20880000,
+      "median_views": 16000000
+    },
+    {
+      "word": "babish",
+      "count": 25,
+      "avg_views": 5912000,
+      "median_views": 4200000
+    },
+    {
+      "word": "stuff",
+      "count": 24,
+      "avg_views": 3075000,
+      "median_views": 1650000.0
+    },
+    {
+      "word": "what",
+      "count": 23,
+      "avg_views": 20639130.43478261,
+      "median_views": 11000000
+    },
+    {
+      "word": "perfect",
+      "count": 22,
+      "avg_views": 177181818.1818182,
+      "median_views": 157500000.0
+    },
+    {
+      "word": "binging",
+      "count": 22,
+      "avg_views": 6168181.818181818,
+      "median_views": 4400000.0
+    },
+    {
+      "word": "world",
+      "count": 20,
+      "avg_views": 45825000,
+      "median_views": 11000000.0
+    },
+    {
+      "word": "dude",
+      "count": 18,
+      "avg_views": 215222222.2222222,
+      "median_views": 183000000.0
+    },
+    {
+      "word": "iphone",
+      "count": 18,
+      "avg_views": 8750000,
+      "median_views": 9250000.0
+    },
+    {
+      "word": "world's",
+      "count": 17,
+      "avg_views": 57723529.4117647,
+      "median_views": 24000000
+    },
+    {
+      "word": "review",
+      "count": 17,
+      "avg_views": 9541176.470588235,
+      "median_views": 10000000
+    },
+    {
+      "word": "most",
+      "count": 16,
+      "avg_views": 36093750,
+      "median_views": 19500000.0
+    },
+    {
+      "word": "first",
+      "count": 16,
+      "avg_views": 11381250,
+      "median_views": 5950000.0
+    },
+    {
+      "word": "pro",
+      "count": 16,
+      "avg_views": 9625000,
+      "median_views": 8900000.0
+    },
+    {
+      "word": "new",
+      "count": 16,
+      "avg_views": 3768750,
+      "median_views": 3400000.0
+    },
+    {
+      "word": "life",
+      "count": 15,
+      "avg_views": 119246666.66666667,
+      "median_views": 11000000
+    },
+    {
+      "word": "2026",
+      "count": 13,
+      "avg_views": 2976923.076923077,
+      "median_views": 3200000
+    },
+    {
+      "word": "get",
+      "count": 12,
+      "avg_views": 8658333.333333334,
+      "median_views": 4500000.0
+    },
+    {
+      "word": "best",
+      "count": 12,
+      "avg_views": 4958333.333333333,
+      "median_views": 4500000.0
+    },
+    {
+      "word": "$1",
+      "count": 11,
+      "avg_views": 392727272.72727275,
+      "median_views": 451000000
+    },
+    {
+      "word": "trick",
+      "count": 11,
+      "avg_views": 212818181.8181818,
+      "median_views": 183000000
+    },
+    {
+      "word": "build",
+      "count": 11,
+      "avg_views": 9481818.181818182,
+      "median_views": 4600000
+    },
+    {
+      "word": "making",
+      "count": 11,
+      "avg_views": 6800000,
+      "median_views": 6400000
+    },
+    {
+      "word": "real",
+      "count": 10,
+      "avg_views": 175650000,
+      "median_views": 25500000.0
+    },
+    {
+      "word": "100",
+      "count": 10,
+      "avg_views": 216870000,
+      "median_views": 191500000.0
+    },
+    {
+      "word": "shots",
+      "count": 10,
+      "avg_views": 218700000,
+      "median_views": 203500000.0
+    },
+    {
+      "word": "ever",
+      "count": 10,
+      "avg_views": 25660000,
+      "median_views": 9300000.0
+    },
+    {
+      "word": "actually",
+      "count": 10,
+      "avg_views": 12530000,
+      "median_views": 6500000.0
+    },
+    {
+      "word": "me",
+      "count": 10,
+      "avg_views": 12890000,
+      "median_views": 10200000.0
+    },
+    {
+      "word": "home",
+      "count": 10,
+      "avg_views": 7020000,
+      "median_views": 6400000.0
+    },
+    {
+      "word": "food",
+      "count": 10,
+      "avg_views": 8220000,
+      "median_views": 6800000.0
+    },
+    {
+      "word": "tried",
+      "count": 10,
+      "avg_views": 7740000,
+      "median_views": 6800000.0
+    },
+    {
+      "word": "explained",
+      "count": 9,
+      "avg_views": 27400000,
+      "median_views": 25000000
+    },
+    {
+      "word": "slow",
+      "count": 9,
+      "avg_views": 25444444.444444444,
+      "median_views": 15000000
+    },
+    {
+      "word": "apple",
+      "count": 9,
+      "avg_views": 8955555.555555556,
+      "median_views": 5200000
+    },
+    {
+      "word": "america",
+      "count": 9,
+      "avg_views": 8033333.333333333,
+      "median_views": 6600000
+    },
+    {
+      "word": "work",
+      "count": 9,
+      "avg_views": 8411111.111111112,
+      "median_views": 7100000
+    },
+    {
+      "word": "china",
+      "count": 9,
+      "avg_views": 3044444.4444444445,
+      "median_views": 2100000
+    },
+    {
+      "word": "water",
+      "count": 8,
+      "avg_views": 114362500,
+      "median_views": 16000000.0
+    },
+    {
+      "word": "car",
+      "count": 8,
+      "avg_views": 74175000,
+      "median_views": 3250000.0
+    },
+    {
+      "word": "largest",
+      "count": 8,
+      "avg_views": 91712500,
+      "median_views": 67500000.0
+    },
+    {
+      "word": "made",
+      "count": 8,
+      "avg_views": 28950000,
+      "median_views": 8600000.0
+    },
+    {
+      "word": "ft",
+      "count": 8,
+      "avg_views": 35875000,
+      "median_views": 20000000.0
+    },
+    {
+      "word": "motion",
+      "count": 8,
+      "avg_views": 26875000,
+      "median_views": 17000000.0
+    },
+    {
+      "word": "years",
+      "count": 8,
+      "avg_views": 12725000,
+      "median_views": 9400000.0
+    },
+    {
+      "word": "earth",
+      "count": 8,
+      "avg_views": 22225000,
+      "median_views": 24000000.0
+    },
+    {
+      "word": "exercises",
+      "count": 8,
+      "avg_views": 6050000,
+      "median_views": 5350000.0
+    },
+    {
+      "word": "gaming",
+      "count": 8,
+      "avg_views": 3937500,
+      "median_views": 3650000.0
+    },
+    {
+      "word": "$500",
+      "count": 7,
+      "avg_views": 405642857.14285713,
+      "median_views": 461000000
+    },
+    {
+      "word": "$10",
+      "count": 7,
+      "avg_views": 193614285.7142857,
+      "median_views": 10000000
+    },
+    {
+      "word": "days",
+      "count": 7,
+      "avg_views": 313657142.85714287,
+      "median_views": 421000000
+    },
+    {
+      "word": "win",
+      "count": 7,
+      "avg_views": 359000000,
+      "median_views": 387000000
+    },
+    {
+      "word": "stereotypes",
+      "count": 7,
+      "avg_views": 145857142.85714287,
+      "median_views": 138000000
+    }
+  ],
+  "top_words_by_avg_views": [
+    {
+      "word": "$500",
+      "count": 7,
+      "avg_views": 405642857.14285713,
+      "median_views": 461000000
+    },
+    {
+      "word": "$1",
+      "count": 11,
+      "avg_views": 392727272.72727275,
+      "median_views": 451000000
+    },
+    {
+      "word": "survive",
+      "count": 6,
+      "avg_views": 377500000,
+      "median_views": 406500000.0
+    },
+    {
+      "word": "win",
+      "count": 7,
+      "avg_views": 359000000,
+      "median_views": 387000000
+    },
+    {
+      "word": "days",
+      "count": 7,
+      "avg_views": 313657142.85714287,
+      "median_views": 421000000
+    },
+    {
+      "word": "000",
+      "count": 42,
+      "avg_views": 234664285.7142857,
+      "median_views": 66500000.0
+    },
+    {
+      "word": "shots",
+      "count": 10,
+      "avg_views": 218700000,
+      "median_views": 203500000.0
+    },
+    {
+      "word": "100",
+      "count": 10,
+      "avg_views": 216870000,
+      "median_views": 191500000.0
+    },
+    {
+      "word": "dude",
+      "count": 18,
+      "avg_views": 215222222.2222222,
+      "median_views": 183000000.0
+    },
+    {
+      "word": "trick",
+      "count": 11,
+      "avg_views": 212818181.8181818,
+      "median_views": 183000000
+    },
+    {
+      "word": "$10",
+      "count": 7,
+      "avg_views": 193614285.7142857,
+      "median_views": 10000000
+    },
+    {
+      "word": "game",
+      "count": 5,
+      "avg_views": 191320000,
+      "median_views": 4500000
+    },
+    {
+      "word": "perfect",
+      "count": 22,
+      "avg_views": 177181818.1818182,
+      "median_views": 157500000.0
+    },
+    {
+      "word": "real",
+      "count": 10,
+      "avg_views": 175650000,
+      "median_views": 25500000.0
+    },
+    {
+      "word": "stereotypes",
+      "count": 7,
+      "avg_views": 145857142.85714287,
+      "median_views": 138000000
+    },
+    {
+      "word": "life",
+      "count": 15,
+      "avg_views": 119246666.66666667,
+      "median_views": 11000000
+    },
+    {
+      "word": "water",
+      "count": 8,
+      "avg_views": 114362500,
+      "median_views": 16000000.0
+    },
+    {
+      "word": "house",
+      "count": 5,
+      "avg_views": 92480000,
+      "median_views": 8900000
+    },
+    {
+      "word": "largest",
+      "count": 8,
+      "avg_views": 91712500,
+      "median_views": 67500000.0
+    },
+    {
+      "word": "biggest",
+      "count": 5,
+      "avg_views": 87020000,
+      "median_views": 4300000
+    },
+    {
+      "word": "robot",
+      "count": 5,
+      "avg_views": 84800000,
+      "median_views": 86000000
+    },
+    {
+      "word": "car",
+      "count": 8,
+      "avg_views": 74175000,
+      "median_views": 3250000.0
+    },
+    {
+      "word": "scam",
+      "count": 5,
+      "avg_views": 73300000,
+      "median_views": 118000000
+    },
+    {
+      "word": "impossible",
+      "count": 5,
+      "avg_views": 72820000,
+      "median_views": 51000000
+    },
+    {
+      "word": "rocket",
+      "count": 5,
+      "avg_views": 70600000,
+      "median_views": 19000000
+    },
+    {
+      "word": "world's",
+      "count": 17,
+      "avg_views": 57723529.4117647,
+      "median_views": 24000000
+    },
+    {
+      "word": "beach",
+      "count": 5,
+      "avg_views": 53700000,
+      "median_views": 13000000
+    },
+    {
+      "word": "all",
+      "count": 6,
+      "avg_views": 48483333.333333336,
+      "median_views": 33500000.0
+    },
+    {
+      "word": "world",
+      "count": 20,
+      "avg_views": 45825000,
+      "median_views": 11000000.0
+    },
+    {
+      "word": "black",
+      "count": 6,
+      "avg_views": 43833333.333333336,
+      "median_views": 31500000.0
+    }
+  ],
+  "length_analysis": {
+    "by_word_count": [
+      {
+        "bucket": "1-4 words",
+        "count": 74,
+        "avg_views": 37498648.64864865,
+        "median_views": 17500000.0
+      },
+      {
+        "bucket": "5-7 words",
+        "count": 218,
+        "avg_views": 72988073.39449541,
+        "median_views": 11000000.0
+      },
+      {
+        "bucket": "8-10 words",
+        "count": 224,
+        "avg_views": 30548214.285714287,
+        "median_views": 7800000.0
+      },
+      {
+        "bucket": "11+ words",
+        "count": 104,
+        "avg_views": 8590384.615384616,
+        "median_views": 4600000.0
+      }
+    ],
+    "by_char_count": [
+      {
+        "bucket": "<=30 chars",
+        "count": 122,
+        "avg_views": 63450819.67213115,
+        "median_views": 13000000.0
+      },
+      {
+        "bucket": "31-50 chars",
+        "count": 295,
+        "avg_views": 53694915.25423729,
+        "median_views": 9400000
+      },
+      {
+        "bucket": "51-70 chars",
+        "count": 165,
+        "avg_views": 14459393.93939394,
+        "median_views": 5800000
+      },
+      {
+        "bucket": "71+ chars",
+        "count": 38,
+        "avg_views": 11992105.263157895,
+        "median_views": 11500000.0
+      }
+    ]
+  },
+  "category_stats": [
+    {
+      "category": "Entertainment/Challenges",
+      "video_count": 25,
+      "avg_views": 470680000,
+      "median_views": 439000000,
+      "avg_title_len_words": 6.8,
+      "top_words": [
+        {
+          "word": "000",
+          "count": 20
+        },
+        {
+          "word": "$1",
+          "count": 9
+        },
+        {
+          "word": "$500",
+          "count": 6
+        },
+        {
+          "word": "win",
+          "count": 6
+        },
+        {
+          "word": "survive",
+          "count": 5
+        },
+        {
+          "word": "days",
+          "count": 5
+        },
+        {
+          "word": "100",
+          "count": 5
+        },
+        {
+          "word": "$100",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "category": "Sports/Entertainment",
+      "video_count": 25,
+      "avg_views": 198240000,
+      "median_views": 173000000,
+      "avg_title_len_words": 5.84,
+      "top_words": [
+        {
+          "word": "perfect",
+          "count": 17
+        },
+        {
+          "word": "dude",
+          "count": 17
+        },
+        {
+          "word": "trick",
+          "count": 10
+        },
+        {
+          "word": "shots",
+          "count": 10
+        },
+        {
+          "word": "stereotypes",
+          "count": 7
+        },
+        {
+          "word": "real",
+          "count": 3
+        },
+        {
+          "word": "life",
+          "count": 3
+        },
+        {
+          "word": "pong",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "category": "Science/Engineering",
+      "video_count": 25,
+      "avg_views": 117960000,
+      "median_views": 115000000,
+      "avg_title_len_words": 7.08,
+      "top_words": [
+        {
+          "word": "world's",
+          "count": 4
+        },
+        {
+          "word": "robot",
+          "count": 4
+        },
+        {
+          "word": "largest",
+          "count": 3
+        },
+        {
+          "word": "maze",
+          "count": 3
+        },
+        {
+          "word": "scam",
+          "count": 3
+        },
+        {
+          "word": "drop",
+          "count": 2
+        },
+        {
+          "word": "backyard",
+          "count": 2
+        },
+        {
+          "word": "squirrel",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Science",
+      "video_count": 100,
+      "avg_views": 31780000,
+      "median_views": 29000000.0,
+      "avg_title_len_words": 7.77,
+      "top_words": [
+        {
+          "word": "smarter",
+          "count": 25
+        },
+        {
+          "word": "every",
+          "count": 25
+        },
+        {
+          "word": "day",
+          "count": 25
+        },
+        {
+          "word": "how",
+          "count": 16
+        },
+        {
+          "word": "why",
+          "count": 10
+        },
+        {
+          "word": "what",
+          "count": 10
+        },
+        {
+          "word": "slow",
+          "count": 9
+        },
+        {
+          "word": "motion",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "category": "Education/Travel",
+      "video_count": 25,
+      "avg_views": 15328000,
+      "median_views": 9100000,
+      "avg_title_len_words": 8.44,
+      "top_words": [
+        {
+          "word": "why",
+          "count": 4
+        },
+        {
+          "word": "road",
+          "count": 3
+        },
+        {
+          "word": "video",
+          "count": 2
+        },
+        {
+          "word": "space",
+          "count": 2
+        },
+        {
+          "word": "water",
+          "count": 2
+        },
+        {
+          "word": "us",
+          "count": 2
+        },
+        {
+          "word": "videos",
+          "count": 2
+        },
+        {
+          "word": "like",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Vlog/Lifestyle",
+      "video_count": 25,
+      "avg_views": 15200000,
+      "median_views": 12000000,
+      "avg_title_len_words": 6.16,
+      "top_words": [
+        {
+          "word": "ft",
+          "count": 6
+        },
+        {
+          "word": "twins",
+          "count": 5
+        },
+        {
+          "word": "dolan",
+          "count": 5
+        },
+        {
+          "word": "james",
+          "count": 4
+        },
+        {
+          "word": "charles",
+          "count": 4
+        },
+        {
+          "word": "coachella",
+          "count": 3
+        },
+        {
+          "word": "trip",
+          "count": 3
+        },
+        {
+          "word": "me",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Travel/Adventure",
+      "video_count": 25,
+      "avg_views": 12328000,
+      "median_views": 11000000,
+      "avg_title_len_words": 9.92,
+      "top_words": [
+        {
+          "word": "world",
+          "count": 5
+        },
+        {
+          "word": "city",
+          "count": 4
+        },
+        {
+          "word": "abandoned",
+          "count": 3
+        },
+        {
+          "word": "world's",
+          "count": 3
+        },
+        {
+          "word": "america",
+          "count": 2
+        },
+        {
+          "word": "laws",
+          "count": 2
+        },
+        {
+          "word": "country",
+          "count": 2
+        },
+        {
+          "word": "traveling",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Vlog",
+      "video_count": 25,
+      "avg_views": 11672000,
+      "median_views": 6600000,
+      "avg_title_len_words": 6.6,
+      "top_words": [
+        {
+          "word": "first",
+          "count": 6
+        },
+        {
+          "word": "class",
+          "count": 4
+        },
+        {
+          "word": "review",
+          "count": 4
+        },
+        {
+          "word": "incredible",
+          "count": 2
+        },
+        {
+          "word": "apple",
+          "count": 2
+        },
+        {
+          "word": "nyc",
+          "count": 2
+        },
+        {
+          "word": "gold",
+          "count": 2
+        },
+        {
+          "word": "logan",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "DIY/Maker",
+      "video_count": 50,
+      "avg_views": 11290000,
+      "median_views": 11000000.0,
+      "avg_title_len_words": 9.16,
+      "top_words": [
+        {
+          "word": "make",
+          "count": 25
+        },
+        {
+          "word": "like",
+          "count": 24
+        },
+        {
+          "word": "stuff",
+          "count": 24
+        },
+        {
+          "word": "how",
+          "count": 15
+        },
+        {
+          "word": "making",
+          "count": 5
+        },
+        {
+          "word": "part",
+          "count": 5
+        },
+        {
+          "word": "homemade",
+          "count": 3
+        },
+        {
+          "word": "underground",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "category": "Documentary/News",
+      "video_count": 25,
+      "avg_views": 9176000,
+      "median_views": 8500000,
+      "avg_title_len_words": 6.76,
+      "top_words": [
+        {
+          "word": "why",
+          "count": 10
+        },
+        {
+          "word": "think",
+          "count": 3
+        },
+        {
+          "word": "putin",
+          "count": 3
+        },
+        {
+          "word": "here's",
+          "count": 3
+        },
+        {
+          "word": "people",
+          "count": 2
+        },
+        {
+          "word": "explained",
+          "count": 2
+        },
+        {
+          "word": "reason",
+          "count": 2
+        },
+        {
+          "word": "real",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Engineering",
+      "video_count": 25,
+      "avg_views": 7436000,
+      "median_views": 6600000,
+      "avg_title_len_words": 5.64,
+      "top_words": [
+        {
+          "word": "how",
+          "count": 7
+        },
+        {
+          "word": "what",
+          "count": 6
+        },
+        {
+          "word": "why",
+          "count": 5
+        },
+        {
+          "word": "work",
+          "count": 5
+        },
+        {
+          "word": "really",
+          "count": 3
+        },
+        {
+          "word": "happened",
+          "count": 3
+        },
+        {
+          "word": "structures",
+          "count": 2
+        },
+        {
+          "word": "dam",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Cooking",
+      "video_count": 50,
+      "avg_views": 6992000,
+      "median_views": 6650000.0,
+      "avg_title_len_words": 8.14,
+      "top_words": [
+        {
+          "word": "babish",
+          "count": 25
+        },
+        {
+          "word": "binging",
+          "count": 22
+        },
+        {
+          "word": "food",
+          "count": 9
+        },
+        {
+          "word": "tried",
+          "count": 8
+        },
+        {
+          "word": "every",
+          "count": 7
+        },
+        {
+          "word": "home",
+          "count": 5
+        },
+        {
+          "word": "chicken",
+          "count": 5
+        },
+        {
+          "word": "made",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "category": "Tech Reviews",
+      "video_count": 75,
+      "avg_views": 6969333.333333333,
+      "median_views": 4600000,
+      "avg_title_len_words": 8.36,
+      "top_words": [
+        {
+          "word": "iphone",
+          "count": 17
+        },
+        {
+          "word": "pro",
+          "count": 14
+        },
+        {
+          "word": "review",
+          "count": 10
+        },
+        {
+          "word": "new",
+          "count": 9
+        },
+        {
+          "word": "apple",
+          "count": 7
+        },
+        {
+          "word": "unboxing",
+          "count": 7
+        },
+        {
+          "word": "pc",
+          "count": 7
+        },
+        {
+          "word": "gaming",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "category": "Fitness",
+      "video_count": 25,
+      "avg_views": 5216000,
+      "median_views": 4800000,
+      "avg_title_len_words": 8.28,
+      "top_words": [
+        {
+          "word": "exercises",
+          "count": 8
+        },
+        {
+          "word": "ranked",
+          "count": 5
+        },
+        {
+          "word": "best",
+          "count": 5
+        },
+        {
+          "word": "worst",
+          "count": 5
+        },
+        {
+          "word": "how",
+          "count": 5
+        },
+        {
+          "word": "chest",
+          "count": 4
+        },
+        {
+          "word": "ab",
+          "count": 4
+        },
+        {
+          "word": "workout",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "category": "Productivity/Business",
+      "video_count": 25,
+      "avg_views": 3744000,
+      "median_views": 3000000,
+      "avg_title_len_words": 8.6,
+      "top_words": [
+        {
+          "word": "how",
+          "count": 12
+        },
+        {
+          "word": "2026",
+          "count": 6
+        },
+        {
+          "word": "life",
+          "count": 5
+        },
+        {
+          "word": "based",
+          "count": 3
+        },
+        {
+          "word": "evidence",
+          "count": 3
+        },
+        {
+          "word": "book",
+          "count": 3
+        },
+        {
+          "word": "time",
+          "count": 2
+        },
+        {
+          "word": "tips",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "category": "Finance",
+      "video_count": 50,
+      "avg_views": 2106000,
+      "median_views": 1850000.0,
+      "avg_title_len_words": 8.56,
+      "top_words": [
+        {
+          "word": "how",
+          "count": 8
+        },
+        {
+          "word": "china",
+          "count": 8
+        },
+        {
+          "word": "dollar",
+          "count": 7
+        },
+        {
+          "word": "why",
+          "count": 5
+        },
+        {
+          "word": "much",
+          "count": 4
+        },
+        {
+          "word": "world",
+          "count": 4
+        },
+        {
+          "word": "broke",
+          "count": 4
+        },
+        {
+          "word": "us",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "category": "Cars",
+      "video_count": 20,
+      "avg_views": 1395000,
+      "median_views": 1250000.0,
+      "avg_title_len_words": 10.3,
+      "top_words": [
+        {
+          "word": "000",
+          "count": 8
+        },
+        {
+          "word": "2025",
+          "count": 5
+        },
+        {
+          "word": "new",
+          "count": 5
+        },
+        {
+          "word": "mercedes",
+          "count": 4
+        },
+        {
+          "word": "2026",
+          "count": 4
+        },
+        {
+          "word": "luxury",
+          "count": 3
+        },
+        {
+          "word": "maybach",
+          "count": 3
+        },
+        {
+          "word": "million",
+          "count": 2
+        }
+      ]
+    }
+  ],
+  "channel_stats": [
+    {
+      "handle": "MrBeast",
+      "channel_name": "MrBeast",
+      "category": "Entertainment/Challenges",
+      "subscriber_count": 507000000,
+      "qualifying_video_count": 25,
+      "avg_views": 470680000,
+      "median_views": 439000000,
+      "top_video_title": "$456,000 Squid Game In Real Life!",
+      "top_video_views": 941000000
+    },
+    {
+      "handle": "DudePerfect",
+      "channel_name": "Dude Perfect",
+      "category": "Sports/Entertainment",
+      "subscriber_count": 62300000,
+      "qualifying_video_count": 25,
+      "avg_views": 198240000,
+      "median_views": 173000000,
+      "top_video_title": "Water Bottle Flip 2 | Dude Perfect",
+      "top_video_views": 631000000
+    },
+    {
+      "handle": "MarkRober",
+      "channel_name": "Mark Rober",
+      "category": "Science/Engineering",
+      "subscriber_count": 79600000,
+      "qualifying_video_count": 25,
+      "avg_views": 117960000,
+      "median_views": 115000000,
+      "top_video_title": "World's Largest Jello Pool- Can you swim in Jello?",
+      "top_video_views": 217000000
+    },
+    {
+      "handle": "veritasium",
+      "channel_name": "Veritasium",
+      "category": "Science",
+      "subscriber_count": 21000000,
+      "qualifying_video_count": 25,
+      "avg_views": 41520000,
+      "median_views": 35000000,
+      "top_video_title": "Why Are 96,000,000 Black Balls on This Reservoir?",
+      "top_video_views": 111000000
+    },
+    {
+      "handle": "kurzgesagt",
+      "channel_name": "Kurzgesagt \u2013 In a Nutshell",
+      "category": "Science",
+      "subscriber_count": 25300000,
+      "qualifying_video_count": 25,
+      "avg_views": 32520000,
+      "median_views": 29000000,
+      "top_video_title": "The Coronavirus Explained & What You Should Do",
+      "top_video_views": 89000000
+    },
+    {
+      "handle": "Vsauce",
+      "channel_name": "Vsauce",
+      "category": "Science",
+      "subscriber_count": 24900000,
+      "qualifying_video_count": 25,
+      "avg_views": 32200000,
+      "median_views": 29000000,
+      "top_video_title": "The Power of Suggestion",
+      "top_video_views": 90000000
+    },
+    {
+      "handle": "smartereveryday",
+      "channel_name": "SmarterEveryDay",
+      "category": "Science",
+      "subscriber_count": 11900000,
+      "qualifying_video_count": 25,
+      "avg_views": 20880000,
+      "median_views": 16000000,
+      "top_video_title": "TATTOOING Close Up (in Slow Motion) - Smarter Every Day 122",
+      "top_video_views": 86000000
+    },
+    {
+      "handle": "colinfurze",
+      "channel_name": "colinfurze",
+      "category": "DIY/Maker",
+      "subscriber_count": 13300000,
+      "qualifying_video_count": 25,
+      "avg_views": 19520000,
+      "median_views": 18000000,
+      "top_video_title": "Homemade Hoverbike",
+      "top_video_views": 51000000
+    },
+    {
+      "handle": "TomScottGo",
+      "channel_name": "Tom Scott",
+      "category": "Education/Travel",
+      "subscriber_count": 6720000,
+      "qualifying_video_count": 25,
+      "avg_views": 15328000,
+      "median_views": 9100000,
+      "top_video_title": "This Video Has 76,669,464 Views",
+      "top_video_views": 76000000
+    },
+    {
+      "handle": "emmachamberlain",
+      "channel_name": "emma chamberlain",
+      "category": "Vlog/Lifestyle",
+      "subscriber_count": 12000000,
+      "qualifying_video_count": 25,
+      "avg_views": 15200000,
+      "median_views": 12000000,
+      "top_video_title": "ROADTRIP TO VEGAS FT DOLAN TWINS & JAMES CHARLES",
+      "top_video_views": 41000000
+    },
+    {
+      "handle": "mkbhd",
+      "channel_name": "Marques Brownlee",
+      "category": "Tech Reviews",
+      "subscriber_count": 21100000,
+      "qualifying_video_count": 25,
+      "avg_views": 12464000,
+      "median_views": 10000000,
+      "top_video_title": "Using Apple Vision Pro: What It\u2019s Actually Like!",
+      "top_video_views": 28000000
+    },
+    {
+      "handle": "YesTheory",
+      "channel_name": "Yes Theory",
+      "category": "Travel/Adventure",
+      "subscriber_count": 10000000,
+      "qualifying_video_count": 25,
+      "avg_views": 12328000,
+      "median_views": 11000000,
+      "top_video_title": "ABANDONED city in America with NO LAWS | Yes Theory",
+      "top_video_views": 28000000
+    },
+    {
+      "handle": "CaseyNeistat",
+      "channel_name": "CaseyNeistat",
+      "category": "Vlog",
+      "subscriber_count": 12700000,
+      "qualifying_video_count": 25,
+      "avg_views": 11672000,
+      "median_views": 6600000,
+      "top_video_title": "ALL TIME GREATEST AIRPLANE SEAT - Emirates First Class Suite",
+      "top_video_views": 55000000
+    },
+    {
+      "handle": "johnnyharris",
+      "channel_name": "Johnny Harris",
+      "category": "Documentary/News",
+      "subscriber_count": 7810000,
+      "qualifying_video_count": 25,
+      "avg_views": 9176000,
+      "median_views": 8500000,
+      "top_video_title": "Why People Think The Government Killed JFK",
+      "top_video_views": 16000000
+    },
+    {
+      "handle": "JoshuaWeissman",
+      "channel_name": "Joshua Weissman",
+      "category": "Cooking",
+      "subscriber_count": 10700000,
+      "qualifying_video_count": 25,
+      "avg_views": 8072000,
+      "median_views": 7100000,
+      "top_video_title": "100 Food Hacks I Learned In Restaurants",
+      "top_video_views": 16000000
+    },
+    {
+      "handle": "PracticalEngineeringChannel",
+      "channel_name": "Practical Engineering",
+      "category": "Engineering",
+      "subscriber_count": 4790000,
+      "qualifying_video_count": 25,
+      "avg_views": 7436000,
+      "median_views": 6600000,
+      "top_video_title": "The Bizarre Paths of Groundwater Around Structures",
+      "top_video_views": 14000000
+    },
+    {
+      "handle": "bingingwithbabish",
+      "channel_name": "Binging with Babish",
+      "category": "Cooking",
+      "subscriber_count": 10500000,
+      "qualifying_video_count": 25,
+      "avg_views": 5912000,
+      "median_views": 4200000,
+      "top_video_title": "Binging with Babish: Tortilla Chip Sombrero from Despicable Me 2",
+      "top_video_views": 25000000
+    },
+    {
+      "handle": "athleanx",
+      "channel_name": "ATHLEAN-X\u2122",
+      "category": "Fitness",
+      "subscriber_count": 14300000,
+      "qualifying_video_count": 25,
+      "avg_views": 5216000,
+      "median_views": 4800000,
+      "top_video_title": "Chest Exercises Ranked (BEST TO WORST!)",
+      "top_video_views": 12000000
+    },
+    {
+      "handle": "UnboxTherapy",
+      "channel_name": "Unbox Therapy",
+      "category": "Tech Reviews",
+      "subscriber_count": 25500000,
+      "qualifying_video_count": 25,
+      "avg_views": 4268000,
+      "median_views": 3800000,
+      "top_video_title": "Can Fit in Your Closet...",
+      "top_video_views": 9300000
+    },
+    {
+      "handle": "LinusTechTips",
+      "channel_name": "Linus Tech Tips",
+      "category": "Tech Reviews",
+      "subscriber_count": 16900000,
+      "qualifying_video_count": 25,
+      "avg_views": 4176000,
+      "median_views": 4100000,
+      "top_video_title": "Building the PERFECT Linux PC with Linus Torvalds",
+      "top_video_views": 7800000
+    },
+    {
+      "handle": "aliabdaal",
+      "channel_name": "Ali Abdaal",
+      "category": "Productivity/Business",
+      "subscriber_count": 6650000,
+      "qualifying_video_count": 25,
+      "avg_views": 3744000,
+      "median_views": 3000000,
+      "top_video_title": "9 Passive Income Ideas - How I Make $27k per Week",
+      "top_video_views": 13000000
+    },
+    {
+      "handle": "ILikeToMakeStuff",
+      "channel_name": "I Like To Make Stuff",
+      "category": "DIY/Maker",
+      "subscriber_count": 3360000,
+      "qualifying_video_count": 25,
+      "avg_views": 3060000,
+      "median_views": 1700000,
+      "top_video_title": "How to make a Wooden Katana from hardwood flooring // Woodworking | I Like To Make Stuff",
+      "top_video_views": 17000000
+    },
+    {
+      "handle": "AndreiJikh",
+      "channel_name": "Andrei Jikh",
+      "category": "Finance",
+      "subscriber_count": 3280000,
+      "qualifying_video_count": 25,
+      "avg_views": 2236000,
+      "median_views": 2000000,
+      "top_video_title": "Russia Says U.S. Planning $37 Trillion Crypto Reset",
+      "top_video_views": 4500000
+    },
+    {
+      "handle": "GrahamStephan",
+      "channel_name": "Graham Stephan",
+      "category": "Finance",
+      "subscriber_count": 5170000,
+      "qualifying_video_count": 25,
+      "avg_views": 1976000,
+      "median_views": 1700000,
+      "top_video_title": "How Much Money MrBeast Makes | The Full Story",
+      "top_video_views": 4900000
+    },
+    {
+      "handle": "DougDeMuro",
+      "channel_name": "Doug DeMuro",
+      "category": "Cars",
+      "subscriber_count": 5080000,
+      "qualifying_video_count": 20,
+      "avg_views": 1395000,
+      "median_views": 1250000.0,
+      "top_video_title": "The Mercedes-Benz CLK GTR Is a $10 Million Hypercar Legend",
+      "top_video_views": 2600000
+    }
+  ]
+}

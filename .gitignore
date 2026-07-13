@@ -4,3 +4,4 @@ backend/venv/
 *.pyo
 backend/dse.db
 *.bak.*
+youtube_creator_analysis/data/raw_data.json
