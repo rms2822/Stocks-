@@ -1,0 +1,59 @@
+name: Refresh dashboard
+
+# Daily refresh of the DSE analysis dashboard.
+#
+# GitHub-hosted runners have open internet, so the scrape of dsebd.org that the
+# pipeline needs works here (it is blocked in some sandboxed environments).
+# DSE trades Sunday-Thursday and closes ~14:30 Bangladesh time (UTC+6); this
+# runs ~16:30 BDT (10:30 UTC) on trading days, after prices settle.
+
+on:
+  schedule:
+    - cron: "30 10 * * 0-4"   # 10:30 UTC, Sun-Thu
+  workflow_dispatch: {}        # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-dashboard
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Refresh data and rebuild dashboard
+        # Never fail the job on a data-source outage: refresh_dashboard.py falls
+        # back to rebuilding from the committed CSV and still exits 0. A non-zero
+        # exit here means the rebuild itself broke, which should surface.
+        run: python refresh_dashboard.py
+
+      - name: Commit refreshed artifacts
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add full_analysis.csv full_analysis.json \
+                  full_analysis_clean.csv full_analysis_clean.json \
+                  analysis_dashboard.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: daily dashboard refresh [skip ci]"
+            git push
+          fi
