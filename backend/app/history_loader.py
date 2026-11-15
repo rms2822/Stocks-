@@ -35,16 +35,14 @@ def fetch_historical(ticker: str, start: date, end: date) -> pd.DataFrame:
     Fetch historical daily OHLCV for one ticker using bdshare.
     Returns empty DataFrame on failure.
     """
+    # Source: DSE's day-end archive API (www.dse.com.bd). Replaces bdshare,
+    # which targeted the retired dsebd.org endpoints.
     try:
-        from bdshare import get_historical_data
-        df = get_historical_data(
-            start.strftime("%Y-%m-%d"),
-            end.strftime("%Y-%m-%d"),
-            ticker.upper(),
-        )
+        from .dse_api import history
+        df = history(ticker, start, end)
         return df if df is not None and not df.empty else pd.DataFrame()
     except Exception as e:
-        logger.debug("bdshare failed for %s: %s", ticker, e)
+        logger.debug("DSE history API failed for %s: %s", ticker, e)
         return pd.DataFrame()
 
 

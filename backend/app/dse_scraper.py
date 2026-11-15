@@ -84,10 +84,21 @@ def fetch_dse_data() -> pd.DataFrame:
         requests.HTTPError  – if DSE returns a non-200 response
         ValueError          – if the expected table is not found in the page
     """
+    # Primary source: DSE's day-end archive JSON API (full OHLCV incl. volume),
+    # via app/dse_api.py. Fall back to parsing the latest-share-price page's RSC
+    # payload (price + % change only) if the API is unavailable.
+    try:
+        from .dse_api import latest_prices
+        df = latest_prices()
+        if len(df):
+            logger.info("Fetched %d stocks from DSE day-end API", len(df))
+            return df
+        logger.warning("DSE day-end API returned 0 rows; falling back to RSC page")
+    except Exception as e:  # noqa: BLE001
+        logger.warning("DSE day-end API failed (%s); falling back to RSC page", e)
+
     response = requests.get(DSE_URL, headers=HEADERS, timeout=30)
     response.raise_for_status()
-
-    # Reconstruct the Next.js RSC streamed payload and pull per-stock records.
     chunks = re.findall(r'self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)', response.text)
     payload = "".join(chunks).encode().decode("unicode_escape", errors="replace")
 
@@ -101,25 +112,15 @@ def fetch_dse_data() -> pd.DataFrame:
         change = _safe_float(delta)
         ycp = round(ltp - change, 2) if (ltp is not None and change is not None) else None
         stocks.append({
-            "ticker":         code,
-            "ltp":            ltp,
-            "high":           None,   # not exposed by the new RSC feed
-            "low":            None,
-            "close":          ltp,
-            "ycp":            ycp,
-            "change":         change,
-            "percent_change": pct,
-            "trade":          None,
-            "value_mn":       None,
-            "volume":         None,
+            "ticker": code, "ltp": ltp, "high": None, "low": None, "close": ltp,
+            "ycp": ycp, "change": change, "percent_change": pct,
+            "trade": None, "value_mn": None, "volume": None,
         })
-
     if not stocks:
         raise ValueError(
-            "Scraped 0 stocks from dse.com.bd — the RSC payload format may have "
-            "changed. Check _RSC_RECORD in dse_scraper.py against the live page."
+            "Scraped 0 stocks from dse.com.bd — both the day-end API and the RSC "
+            "page failed. Check app/dse_api.py and _RSC_RECORD in dse_scraper.py."
         )
-
     df = pd.DataFrame(stocks)
-    logger.info("Fetched %d stocks from DSE (%s)", len(df), DSE_URL)
+    logger.info("Fetched %d stocks from DSE RSC fallback", len(df))
     return df
