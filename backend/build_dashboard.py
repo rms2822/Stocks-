@@ -14,7 +14,7 @@ import os
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "full_analysis_clean.json")
 OUT = os.path.join(HERE, "analysis_dashboard.html")
-SCAN_DATE = "2026-07-12"  # date of the scored scan the analysis columns come from
+SCAN_DATE = datetime.date.today().isoformat()  # pipeline runs same-day
 
 
 def _latest_live_prices():
@@ -138,6 +138,8 @@ tr:hover td{background:color-mix(in srgb,var(--blue) 7%,var(--surface))}
 .freshness{display:flex;gap:10px;align-items:flex-start;background:color-mix(in srgb,var(--warning) 12%,var(--surface));
   border:1px solid color-mix(in srgb,var(--warning) 45%,var(--border));border-radius:10px;padding:11px 14px;margin-bottom:20px;font-size:12.5px;line-height:1.5}
 .freshness b{color:var(--ink)}
+.freshness.ok{background:color-mix(in srgb,var(--good) 10%,var(--surface));border-color:color-mix(in srgb,var(--good) 40%,var(--border))}
+.freshness.ok .fdot{background:var(--good)}
 .fdot{width:9px;height:9px;border-radius:50%;background:var(--warning);flex:none;margin-top:5px}
 td.live-up{color:var(--good-ink);font-variant-numeric:tabular-nums}
 td.live-down{color:var(--critical-ink);font-variant-numeric:tabular-nums}
@@ -151,12 +153,10 @@ td.live-down{color:var(--critical-ink);font-variant-numeric:tabular-nums}
   </header>
   <div class="sub">Combined technical + fundamental screen of the full Dhaka Stock Exchange universe. Sectors recovered and data-quality flagged.</div>
 
-  <div class="freshness" id="freshness">
+  <div class="freshness ok" id="freshness">
     <span class="fdot"></span>
     <div>
-      <b>Prices: live __PRICE_DATE__</b> (__PRICE_MATCHED__ tickers refreshed from dse.com.bd) &nbsp;·&nbsp;
-      <b>Scores &amp; BUY/SELL: __SCAN_DATE__ scan — STALE.</b>
-      The scoring pipeline (RSI, momentum, fundamentals) still needs repointing to DSE's new site, so recommendations below are dated __SCAN_DATE__. The <i>Live</i> and <i>Δ since scan</i> columns are current.
+      <b>Fresh scan: __SCAN_DATE__.</b> Prices, RSI/momentum and fundamentals (NAV, P/B, EPS-trend, debt) all sourced live from DSE's current site (dse.com.bd) + amarstock. Intraday prices refreshed __PRICE_DATE__ (__PRICE_MATCHED__ tickers) in the <i>Live</i> / <i>Δ since scan</i> columns.
     </div>
   </div>
 
@@ -277,7 +277,7 @@ miniTable(document.getElementById('worstsell'),
 const COLS = [
   ['ticker','Ticker','s'],['sector','Sector','s'],['recommendation','Rec','r'],
   ['combined_score','Score',1],['tech_score','Tech',0],['fund_score','Fund',0],
-  ['ltp','LTP(Jul)',2],['live_ltp','Live',2],['pct_since_scan','Δscan%',1],['rsi','RSI',0],
+  ['ltp','LTP',2],['live_ltp','Live',2],['pct_since_scan','Δscan%',1],['rsi','RSI',0],
   ['pe','PE',1],['pb','P/B',2],['eps','EPS',2],['debt_equity','D/E',2],
 ];
 let sortKey='combined_score', sortDir=-1;
