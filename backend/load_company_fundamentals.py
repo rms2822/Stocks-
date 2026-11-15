@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import sqlite3
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app.company_fundamentals import fetch_company
@@ -25,19 +26,31 @@ def main():
     print(f"Enriching {len(tickers)} companies from dse.com.bd (workers={workers})...")
 
     results = {}
-    done = fail = 0
+    # Pass 1: concurrent (fast).
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {ex.submit(fetch_company, t): t for t in tickers}
+        n = 0
         for fut in as_completed(futs):
             t = futs[fut]
             d = fut.result()
             if d:
                 results[t] = d
-                done += 1
-            else:
-                fail += 1
-            if (done + fail) % 50 == 0:
-                print(f"  {done+fail}/{len(tickers)} (ok {done}, fail {fail})")
+            n += 1
+            if n % 50 == 0:
+                print(f"  pass1 {n}/{len(tickers)} (ok {len(results)})")
+
+    # Pass 2: sequential retry of failures (company pages time out under load).
+    missing = [t for t in tickers if t not in results]
+    if missing:
+        print(f"  retrying {len(missing)} failures sequentially...")
+        for t in missing:
+            for _ in range(3):
+                d = fetch_company(t, timeout=35)
+                if d:
+                    results[t] = d
+                    break
+                time.sleep(1)
+    done, fail = len(results), len(tickers) - len(results)
 
     # Write updates
     con = sqlite3.connect(DB)
