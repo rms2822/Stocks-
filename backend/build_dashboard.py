@@ -5,12 +5,33 @@ analysis_dashboard.html with the data embedded, so it opens offline with no
 backend and no external libraries. All aggregates are computed in-browser from
 the single embedded dataset.
 """
+import csv
+import datetime
+import glob
 import json
 import os
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "full_analysis_clean.json")
 OUT = os.path.join(HERE, "analysis_dashboard.html")
+SCAN_DATE = "2026-07-12"  # date of the scored scan the analysis columns come from
+
+
+def _latest_live_prices():
+    """Return (price_date, {ticker: {ltp, pct}}) from the newest live-price CSV, or (None, {})."""
+    files = sorted(glob.glob(os.path.join(HERE, "dse_latest_prices_*.csv")))
+    if not files:
+        return None, {}
+    path = files[-1]
+    date = os.path.basename(path).replace("dse_latest_prices_", "").replace(".csv", "")
+    out = {}
+    with open(path, encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            try:
+                out[r["ticker"]] = {"ltp": float(r["ltp"]), "pct": float(r["percent_change"])}
+            except (ValueError, KeyError):
+                continue
+    return date, out
 
 HTML = r"""<!DOCTYPE html>
 <html lang="en">
@@ -114,6 +135,12 @@ tr:hover td{background:color-mix(in srgb,var(--blue) 7%,var(--surface))}
 @media(max-width:720px){.two{grid-template-columns:1fr}.recgrid{grid-template-columns:1fr}
   .bar-row{grid-template-columns:96px 1fr 46px}}
 .foot-note{font-size:12px;color:var(--muted);margin-top:10px}
+.freshness{display:flex;gap:10px;align-items:flex-start;background:color-mix(in srgb,var(--warning) 12%,var(--surface));
+  border:1px solid color-mix(in srgb,var(--warning) 45%,var(--border));border-radius:10px;padding:11px 14px;margin-bottom:20px;font-size:12.5px;line-height:1.5}
+.freshness b{color:var(--ink)}
+.fdot{width:9px;height:9px;border-radius:50%;background:var(--warning);flex:none;margin-top:5px}
+td.live-up{color:var(--good-ink);font-variant-numeric:tabular-nums}
+td.live-down{color:var(--critical-ink);font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -123,6 +150,15 @@ tr:hover td{background:color-mix(in srgb,var(--blue) 7%,var(--surface))}
     <div class="sub" id="asof"></div>
   </header>
   <div class="sub">Combined technical + fundamental screen of the full Dhaka Stock Exchange universe. Sectors recovered and data-quality flagged.</div>
+
+  <div class="freshness" id="freshness">
+    <span class="fdot"></span>
+    <div>
+      <b>Prices: live __PRICE_DATE__</b> (__PRICE_MATCHED__ tickers refreshed from dse.com.bd) &nbsp;·&nbsp;
+      <b>Scores &amp; BUY/SELL: __SCAN_DATE__ scan — STALE.</b>
+      The scoring pipeline (RSI, momentum, fundamentals) still needs repointing to DSE's new site, so recommendations below are dated __SCAN_DATE__. The <i>Live</i> and <i>Δ since scan</i> columns are current.
+    </div>
+  </div>
 
   <section><div class="kpis" id="kpis"></div></section>
 
@@ -241,7 +277,7 @@ miniTable(document.getElementById('worstsell'),
 const COLS = [
   ['ticker','Ticker','s'],['sector','Sector','s'],['recommendation','Rec','r'],
   ['combined_score','Score',1],['tech_score','Tech',0],['fund_score','Fund',0],
-  ['ltp','LTP',2],['percent_change','%Chg',2],['rsi','RSI',0],
+  ['ltp','LTP(Jul)',2],['live_ltp','Live',2],['pct_since_scan','Δscan%',1],['rsi','RSI',0],
   ['pe','PE',1],['pb','P/B',2],['eps','EPS',2],['debt_equity','D/E',2],
 ];
 let sortKey='combined_score', sortDir=-1;
@@ -267,6 +303,8 @@ function render(){
       if(k==='recommendation') return `<td><span class="badge ${d[k]}">${d[k]}</span></td>`;
       if(k==='ticker') return `<td>${d[k]}${d.sector_source==='recovered'?'<span class="recovered">fixed</span>':''}</td>`;
       if(f==='s') return `<td title="${d[k]}">${d[k]}</td>`;
+      if(k==='pct_since_scan'){ const v=d[k]; if(v===null) return '<td><span class="na">&mdash;</span></td>';
+        return `<td class="${v>=0?'live-up':'live-down'}">${v>=0?'+':''}${v.toFixed(1)}%</td>`; }
       let v=d[k];
       if(k==='pe'&&v!==null&&!d.pe_reliable) return `<td><span class="flag" title="not economically meaningful">${fmt(v,f)} &#9888;</span></td>`;
       return `<td>${fmt(v,f)}</td>`;
@@ -288,11 +326,31 @@ render();
 
 def main():
     data = json.load(open(DATA, encoding="utf-8"))
+    price_date, live = _latest_live_prices()
+    matched = 0
+    for row in data:
+        lp = live.get(row["ticker"])
+        if lp:
+            matched += 1
+            row["live_ltp"] = lp["ltp"]
+            row["live_pct"] = lp["pct"]
+            scan_ltp = row.get("ltp")
+            row["pct_since_scan"] = (
+                round((lp["ltp"] - scan_ltp) / scan_ltp * 100, 1)
+                if scan_ltp else None
+            )
+        else:
+            row["live_ltp"] = row["live_pct"] = row["pct_since_scan"] = None
     compact = json.dumps(data, separators=(",", ":"))
-    html = HTML.replace("__DATA__", compact)
+    html = (HTML
+            .replace("__DATA__", compact)
+            .replace("__SCAN_DATE__", SCAN_DATE)
+            .replace("__PRICE_DATE__", price_date or "n/a")
+            .replace("__PRICE_MATCHED__", str(matched)))
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(html)
-    print(f"Wrote {OUT} ({len(html)//1024} KB, {len(data)} rows embedded)")
+    print(f"Wrote {OUT} ({len(html)//1024} KB, {len(data)} rows; "
+          f"live prices {price_date or 'none'} matched {matched})")
 
 
 if __name__ == "__main__":

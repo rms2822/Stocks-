@@ -98,8 +98,20 @@ def refresh_data() -> bool:
         log("backend stopped")
 
 
+def fetch_live_prices() -> bool:
+    """Best-effort: pull today's prices from the current DSE site (dse.com.bd).
+
+    Independent of the heavy scan/scoring pipeline, so the dashboard's price
+    columns stay current even when the full backend can't run. Non-fatal.
+    """
+    r = run([PY, "fetch_live_prices.py"])
+    return r.returncode == 0
+
+
 def rebuild_dashboard() -> bool:
-    """clean_analysis + build_dashboard from whatever full_analysis.csv exists."""
+    """fetch live prices, then clean_analysis + build_dashboard from existing scan."""
+    if not fetch_live_prices():
+        log("live price fetch unavailable -> dashboard keeps last prices")
     ok = run([PY, "clean_analysis.py"]).returncode == 0
     ok = run([PY, "build_dashboard.py"]).returncode == 0 and ok
     return ok
